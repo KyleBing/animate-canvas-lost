@@ -81,6 +81,12 @@ class AnimateLostBrowser {
         heartLayer.style.position = 'fixed'
         heartLayer.style.top = '0'
         heartLayer.style.left = '0'
+
+        // fill background
+        let ctx = heartLayer.getContext('2d')
+        ctx.fillStyle = this.bgColor
+        ctx.rect(0,0,this.frame.width, this.frame.height)
+        ctx.fill()
     }
 
 
@@ -93,13 +99,6 @@ class AnimateLostBrowser {
         document.documentElement.append(heartLayer)
 
         this.draw()
-
-        // fill background
-        let canvasHeart = document.getElementById('heartLayer')
-        let ctx = canvasHeart.getContext('2d')
-        ctx.fillStyle = this.bgColor
-        ctx.rect(0,0,this.frame.width, this.frame.height)
-        ctx.fill()
 
         document.documentElement.addEventListener('mousemove', event => {
             this.mouseX = event.x
