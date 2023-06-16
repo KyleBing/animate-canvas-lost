@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>animate sponsor</title>
-    <script src="animate-sponsor-browser.js?"></script>
+    <script src="animate-lost-browser.js?"></script>
     <script>
         let queryData = getSearchData()
         console.log(queryData)
-        let animateHeartCanvas = new AnimateHeartCanvas(
+        let animateLost = new AnimateLostBrowser(
             queryData.title,
             queryData.titleFontSize,
-            queryData.isDrawLine,
+            queryData.isShowLine,
             queryData.isShowTitle,
             queryData.lineWidth,
             queryData.bgColor,
@@ -43,7 +43,7 @@
 </head>
 
 <body>
-<a class="github-btn" href="https://github.com/KyleBing/animate-heart-canvas">github</a>
+<a class="github-btn" href="https://github.com/KyleBing/animate-canvas-lost">github</a>
 </body>
 
 <style>

@@ -2,24 +2,24 @@
  * 迷离
  * Lost
  * @author: KyleBing(kylebing@163.com)
- * @github: https://github.com/KyleBing/animate-heart-canvas
+ * @github: https://github.com/KyleBing/animate-canvas-lost
  * @date-init: 2023-06-16
  * @date-update: 2023-06-16
  * @version: v0.0.1
  * @platform: NPM
  */
 
-class AnimateHeartCanvas {
+class AnimateLostBrowser {
     /**
      *
-     * @param title string 自定义点位的标题，默认为屏幕坐标值
-     * @param titleFontSize number 标题文字大小
-     * @param isDrawLine number 1 画线 0 不画线
-     * @param isShowTitle number 1 显示标题 0 不显示标题
-     * @param lineWidth number 线条宽度 默认：2
-     * @param bgColor string 背景颜色 RGB 等颜色格式均可
+     * @param title             string 自定义点位的标题，默认为屏幕坐标值
+     * @param titleFontSize     number 标题文字大小
+     * @param isShowLine        number 1 画线 0 不画线
+     * @param isShowTitle       number 1 显示标题 0 不显示标题
+     * @param lineWidth         number 线条宽度 默认：2
+     * @param bgColor           string 背景颜色 RGB 等颜色格式均可
      */
-    constructor(title, titleFontSize, isDrawLine, isShowTitle, lineWidth, bgColor) {
+    constructor(title, titleFontSize, isShowLine, isShowTitle, lineWidth, bgColor) {
         this.isPlaying = true // 默认自动播放
 
         this.mouseX = 0
@@ -35,8 +35,8 @@ class AnimateHeartCanvas {
         this.bgColor = bgColor || 'black'
         this.title = title
         this.titleFontSize = titleFontSize || 20
-        this.isDrawLine = isDrawLine === '1' || false
-        this.isShowTitle = isShowTitle === '1' || false
+        this.isShowLine = isShowLine !== '0'
+        this.isShowTitle = isShowTitle !== '0'
         this.lineWidth = Number(lineWidth) || 2
 
         this.init()
@@ -107,11 +107,6 @@ class AnimateHeartCanvas {
         })
     }
 
-    // 判断鼠标跟 box 的距离
-    isMouseIsCloseToBox(box){
-        let distance = Math.sqrt(Math.pow(Math.abs(box.position.x / 2 - this.mouseX),2) + Math.pow(Math.abs(box.position.y /2  - this.mouseY), 2))
-        return distance < 100
-    }
 
 
     draw() {
@@ -128,7 +123,7 @@ class AnimateHeartCanvas {
 
         let pos = randomPosition(this.frame.width, this.frame.height) // 新的随机位置
 
-        if (this.isDrawLine){
+        if (this.isShowLine){
             ctx.beginPath()
             if (this.lastPosition && this.lastPosition.length > 0){
                 ctx.moveTo(...this.lastPosition)
@@ -162,7 +157,6 @@ class AnimateHeartCanvas {
 
 function getColor(timeLine){
     return `hsla(${timeLine%360},100%,50%,1)`
-
 }
 
 
