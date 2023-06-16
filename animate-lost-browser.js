@@ -155,7 +155,7 @@ class AnimateLostBrowser {
 }
 
 function getColor(timeLine){
-    return `hsla(${timeLine%360},100%,50%,1)`
+    return `hsla(${timeLine%360 + 200},100%,50%,1)`
 }
 
 
