@@ -1,6 +1,6 @@
 /**
- * 心动
- * Animated Heart Canvas
+ * 失散
+ * Lost
  * @author: KyleBing(kylebing@163.com)
  * @github: https://github.com/KyleBing/animate-heart-canvas
  * @date-init: 2023-02-21
@@ -10,14 +10,6 @@
  */
 
 class AnimateHeartCanvas {
-    /**
-     * @param hMin 颜色 h 最小值
-     * @param hMax 颜色 h 最大值
-     * @param countHeart 心的数量
-     * @param sizeMin 心形最小值
-     * @param sizeMax 心形最大值
-     * @param bgColor 背景颜色
-     */
     constructor(hMin, hMax, countHeart = 150, sizeMin = 50, sizeMax = 350, bgColor) {
         this.isPlaying = true // 默认自动播放
 
@@ -126,12 +118,15 @@ class AnimateHeartCanvas {
         if (this.lastPosition && this.lastPosition.length > 0){
             ctx.moveTo(...this.lastPosition)
         } else {
-
         }
         ctx.lineTo(...pos)
         this.lastPosition = pos
-        ctx.fillText(`${pos}`, ...pos)
         ctx.stroke()
+
+        ctx.fillText(`${pos}`, ...pos)
+        ctx.fillStyle = 'black'
+        ctx.clearRect(10, this.configFrame.height - 53, 100, 30)
+        ctx.fillText(`${this.timeLine}`, 20, this.configFrame.height - 30)
 
         if (this.isPlaying) {
             window.requestAnimationFrame(() => {
