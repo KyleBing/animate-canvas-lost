@@ -8,11 +8,11 @@
         let queryData = getSearchData()
         console.log(queryData)
         let animateHeartCanvas = new AnimateHeartCanvas(
-            Number(queryData.hMin),
-            Number(queryData.hMax),
-            Number(queryData.countHeart),
-            Number(queryData.sizeMin),
-            Number(queryData.sizeMax),
+            queryData.title,
+            queryData.titleFontSize,
+            queryData.isDrawLine,
+            queryData.isShowTitle,
+            queryData.lineWidth,
             queryData.bgColor,
         )
 

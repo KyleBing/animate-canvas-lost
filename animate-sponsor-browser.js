@@ -1,36 +1,51 @@
 /**
- * 失散
+ * 迷离
  * Lost
  * @author: KyleBing(kylebing@163.com)
  * @github: https://github.com/KyleBing/animate-heart-canvas
- * @date-init: 2023-02-21
- * @date-update: 2023-02-23
- * @version: v0.1.9
+ * @date-init: 2023-06-16
+ * @date-update: 2023-06-16
+ * @version: v0.0.1
  * @platform: NPM
  */
 
 class AnimateHeartCanvas {
-    constructor(hMin, hMax, countHeart = 150, sizeMin = 50, sizeMax = 350, bgColor) {
+    /**
+     *
+     * @param title string 自定义点位的标题，默认为屏幕坐标值
+     * @param titleFontSize number 标题文字大小
+     * @param isDrawLine number 1 画线 0 不画线
+     * @param isShowTitle number 1 显示标题 0 不显示标题
+     * @param lineWidth number 线条宽度 默认：2
+     * @param bgColor string 背景颜色 RGB 等颜色格式均可
+     */
+    constructor(title, titleFontSize, isDrawLine, isShowTitle, lineWidth, bgColor) {
         this.isPlaying = true // 默认自动播放
 
         this.mouseX = 0
         this.mouseY = 0
-        this.step = 0.005
 
-        this.configFrame = {
+        this.frame = {
             width : 1200,
             height: 300,
-            bgColor: bgColor
         }
+
         this.timeLine = 0
+
+        this.bgColor = bgColor || 'black'
+        this.title = title
+        this.titleFontSize = titleFontSize || 20
+        this.isDrawLine = isDrawLine === '1' || false
+        this.isShowTitle = isShowTitle === '1' || false
+        this.lineWidth = Number(lineWidth) || 2
 
         this.init()
 
-        this.lastPosition = []
+        this.lastPosition = [] // 上一个点的位置
 
         window.onresize = () => {
-            this.configFrame.height = innerHeight * 2
-            this.configFrame.width = innerWidth * 2
+            this.frame.height = innerHeight * 2
+            this.frame.width = innerWidth * 2
             let heartLayer = document.getElementById('heartLayer')
             this.updateFrameAttribute(heartLayer)
         }
@@ -57,10 +72,10 @@ class AnimateHeartCanvas {
 
     updateFrameAttribute(heartLayer){
         heartLayer.setAttribute('id', 'heartLayer')
-        heartLayer.setAttribute('width', this.configFrame.width)
-        heartLayer.setAttribute('height', this.configFrame.height)
-        heartLayer.style.width = `${this.configFrame.width / 2}px`
-        heartLayer.style.height = `${this.configFrame.height / 2}px`
+        heartLayer.setAttribute('width', this.frame.width)
+        heartLayer.setAttribute('height', this.frame.height)
+        heartLayer.style.width = `${this.frame.width / 2}px`
+        heartLayer.style.height = `${this.frame.height / 2}px`
         heartLayer.style.zIndex = '-3'
         heartLayer.style.userSelect = 'none'
         heartLayer.style.position = 'fixed'
@@ -70,8 +85,8 @@ class AnimateHeartCanvas {
 
 
     init(){
-        this.configFrame.height = innerHeight * 2
-        this.configFrame.width = innerWidth * 2
+        this.frame.height = innerHeight * 2
+        this.frame.width = innerWidth * 2
 
         let heartLayer = document.createElement("canvas")
         this.updateFrameAttribute(heartLayer)
@@ -82,8 +97,8 @@ class AnimateHeartCanvas {
         // fill background
         let canvasHeart = document.getElementById('heartLayer')
         let ctx = canvasHeart.getContext('2d')
-        ctx.fillStyle = 'black'
-        ctx.rect(0,0,this.configFrame.width, this.configFrame.height)
+        ctx.fillStyle = this.bgColor
+        ctx.rect(0,0,this.frame.width, this.frame.height)
         ctx.fill()
 
         document.documentElement.addEventListener('mousemove', event => {
@@ -105,28 +120,37 @@ class AnimateHeartCanvas {
         let canvasHeart = document.getElementById('heartLayer')
         let ctx = canvasHeart.getContext('2d')
 
-        // ctx.clearRect(0, 0, this.configFrame.width, this.configFrame.height)
-        ctx.strokeStyle = 'red'
-        ctx.fillStyle = 'white'
-        ctx.lineWidth = 2
+        // ctx.clearRect(0, 0, this.frame.width, this.frame.height)
+        // ctx.strokeStyle = 'red'
+        let currentColor = getColor(this.timeLine)
+        ctx.strokeStyle = currentColor
+        ctx.lineWidth = this.lineWidth
 
-        ctx.font = '20px sans-serf'
+        let pos = randomPosition(this.frame.width, this.frame.height) // 新的随机位置
 
-        let pos = randomPosition(this.configFrame.width, this.configFrame.height)
-        console.log(pos)
-        ctx.beginPath()
-        if (this.lastPosition && this.lastPosition.length > 0){
-            ctx.moveTo(...this.lastPosition)
-        } else {
+        if (this.isDrawLine){
+            ctx.beginPath()
+            if (this.lastPosition && this.lastPosition.length > 0){
+                ctx.moveTo(...this.lastPosition)
+            } else {
+            }
+            ctx.lineTo(...pos)
+            ctx.stroke()
         }
-        ctx.lineTo(...pos)
-        this.lastPosition = pos
-        ctx.stroke()
 
-        ctx.fillText(`${pos}`, ...pos)
+        this.lastPosition = pos
+
+        if (this.isShowTitle){
+            ctx.fillStyle = currentColor
+            ctx.font = `${this.titleFontSize}px sans-serf`
+            ctx.fillText(`${this.title || pos}`, ...pos)
+        }
+
+        // 显示时间标线序号
         ctx.fillStyle = 'black'
-        ctx.clearRect(10, this.configFrame.height - 53, 100, 30)
-        ctx.fillText(`${this.timeLine}`, 20, this.configFrame.height - 30)
+        ctx.font = '20px sans-serf'
+        ctx.clearRect(10, this.frame.height - 53, 100, 30)
+        ctx.fillText(`${this.timeLine}`, 20, this.frame.height - 30)
 
         if (this.isPlaying) {
             window.requestAnimationFrame(() => {
@@ -134,6 +158,11 @@ class AnimateHeartCanvas {
             })
         }
     }
+}
+
+function getColor(timeLine){
+    return `hsla(${timeLine%360},100%,50%,1)`
+
 }
 
 
