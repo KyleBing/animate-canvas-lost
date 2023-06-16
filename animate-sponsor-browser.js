@@ -87,6 +87,13 @@ class AnimateHeartCanvas {
 
         this.draw()
 
+        // fill background
+        let canvasHeart = document.getElementById('heartLayer')
+        let ctx = canvasHeart.getContext('2d')
+        ctx.fillStyle = 'black'
+        ctx.rect(0,0,this.configFrame.width, this.configFrame.height)
+        ctx.fill()
+
         document.documentElement.addEventListener('mousemove', event => {
             this.mouseX = event.x
             this.mouseY = event.y
@@ -106,11 +113,10 @@ class AnimateHeartCanvas {
         let canvasHeart = document.getElementById('heartLayer')
         let ctx = canvasHeart.getContext('2d')
 
-
         // ctx.clearRect(0, 0, this.configFrame.width, this.configFrame.height)
         ctx.strokeStyle = 'red'
-        ctx.fillStyle = 'blue'
-        ctx.lineWidth = 5
+        ctx.fillStyle = 'white'
+        ctx.lineWidth = 2
 
         ctx.font = '20px sans-serf'
 
@@ -122,7 +128,7 @@ class AnimateHeartCanvas {
         } else {
 
         }
-        ctx.moveTo(...pos)
+        ctx.lineTo(...pos)
         this.lastPosition = pos
         ctx.fillText(`${pos}`, ...pos)
         ctx.stroke()
